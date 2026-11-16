@@ -243,7 +243,7 @@ BASE_REVIEWS = [
             "Requires a 48-to-72 hour undisturbed cure in a 68°F–75°F room (always seal raw live-edge wood with a thin seal coat first)"
         ],
         "body_paragraphs": [
-            "When calculating a live-edge river table pour on our epoxy volume calculator, a 72-inch long by 10-inch wide river channel at 2.0 inches deep equals $1,440\text{ cubic inches} \div 231 = 6.23\text{ US Gallons}$ of mixed resin. Pouring 6 gallons of inferior resin at once is terrifying because excessive exothermic heat can warp the wood slabs and crack the center of the river. Superclear Liquid Glass 2.0 is formulated specifically for high-mass pours.",
+            "When calculating a live-edge river table pour on our epoxy volume calculator, a 72-inch long by 10-inch wide river channel at 2.0 inches deep equals $1,440\\text{ cubic inches} \\div 231 = 6.23\\text{ US Gallons}$ of mixed resin. Pouring 6 gallons of inferior resin at once is terrifying because excessive exothermic heat can warp the wood slabs and crack the center of the river. Superclear Liquid Glass 2.0 is formulated specifically for high-mass pours.",
             "In our 2.5-inch deep black-walnut test pour tinted with 25 grams per gallon of Charcoal Black mica powder, peak exothermic temperature stayed below 122°F—preventing any shrinkage pull-away from the live edges.",
             "After 72 hours, we surfaced the slab with a CNC router sled and wet-sanded from 220 to 3,000 grit before buffing with polishing compound, achieving a flawless mirror finish."
         ]
@@ -421,8 +421,19 @@ def get_cumulative_product_reviews():
                 ("Home Bar Top Seal & Flood Coat (2.0 Gal 1:1)", 2.0, "1:1 Bar Top", "1/8\" + Edge", "8-Foot L-Bar")
             ]
             p_name, gal_v, ratio_s, thick_s, dim_s = pour_configs[extra_num % len(pour_configs)]
+
+            # === PERBAIKAN: hitung string slug DI LUAR f-string (menghindari backslash di dalam ekspresi f-string) ===
+            gal_slug = str(gal_v).replace('.', '-')
+            thick_first = thick_s.split()[0]
+            thick_slug = (
+                thick_first
+                .replace('.', '-')
+                .replace('"', 'in')
+                .replace('/', '-')
+            )
+
             proc_tuple = (
-                f"epoxy-pour-{str(gal_v).replace('.','-')}gal-{thick_s.split()[0].replace('.','-').replace('\"','in').replace('/','-')}-review-{extra_num}",
+                f"epoxy-pour-{gal_slug}gal-{thick_slug}-review-{extra_num}",
                 f"{gal_v} Gallon ({ratio_s}, {thick_s}) Epoxy Kit for {p_name} Review (#{extra_num})",
                 f"{gal_v}-Gal {ratio_s} Epoxy System",
                 "4.8",
